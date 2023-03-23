@@ -8,8 +8,9 @@ namespace DevFreela.Core.Entities
 {
     public class User
     {
-        public User(string fullName, string email, DateTime birthDate)
+        public User(int id, string fullName, string email, DateTime birthDate)
         {
+            Id = id;
             FullName = fullName;
             Email = email;
             BirthDate = birthDate;
@@ -21,6 +22,7 @@ namespace DevFreela.Core.Entities
             FreelanceProjects = new List<Project>();
         }
 
+        public int Id { get; private set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
