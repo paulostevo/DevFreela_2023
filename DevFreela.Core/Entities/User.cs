@@ -31,5 +31,6 @@ namespace DevFreela.Core.Entities
         public List<UserSkill> Skills { get; set; }
         public List<Project> OwnedProjects { get; set; }
         public List<Project> FreelanceProjects { get; set; }
+        public List<ProjectComment> Comments { get; set; }
     }
 }

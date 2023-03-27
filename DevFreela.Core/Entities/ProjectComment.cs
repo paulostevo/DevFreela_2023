@@ -8,7 +8,7 @@ namespace DevFreela.Core.Entities
 {
     public class ProjectComment : BaseEntity
     {
-        public ProjectComment(string content, string idProject, string idUser)
+        public ProjectComment(string content, int idProject, int idUser)
         {
             Content = content;
             IdProject = idProject;
@@ -17,8 +17,10 @@ namespace DevFreela.Core.Entities
         }
 
         public string Content { get; private set; }
-        public string IdProject { get; set; }
-        public string IdUser { get; set; }
+        public int IdProject { get; set; }
+        public Project Project { get; set; }
+        public int IdUser { get; set; }
+        public User User { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

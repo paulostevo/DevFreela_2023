@@ -16,6 +16,8 @@ namespace DevFreela.Core.Entities
             IdCliente = idCliente;
             IdFreelancer = idFreelancer;
             TotalCost = totalCost;
+            //StartedAt = startedAt;
+
 
             CreatedAt = DateTime.Now;
             Status = ProjectStatusEnum.Created;
@@ -25,7 +27,9 @@ namespace DevFreela.Core.Entities
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int IdCliente { get; private set; }
+        public User Client { get; set; }
         public int IdFreelancer { get; private set; }
+        public User Freelancer { get; set; }
         public decimal TotalCost { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? StartedAt { get; private set; }
