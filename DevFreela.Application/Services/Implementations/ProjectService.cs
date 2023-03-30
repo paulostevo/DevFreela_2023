@@ -2,6 +2,7 @@
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
 using DevFreela.Core.Entities;
+using DevFreela.Core.Repositories;
 using DevFreela.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,11 +12,11 @@ namespace DevFreela.Application.Services.Implementations
     public class ProjectService : IProjectService
     {
         private readonly DevFreelaDbContext _dbContext;
-        private readonly string _connectionString;
-        public ProjectService(DevFreelaDbContext dbContext, IConfiguration configuration)
+        private readonly IProjectRepository _projectRepository;
+        public ProjectService(DevFreelaDbContext dbContext, IProjectRepository projectRepository)
         {
             _dbContext = dbContext;
-            _connectionString = configuration.GetConnectionString("DevFreelaCs");
+            _projectRepository = projectRepository;
         }
 
         //public int Create(NewProjectInputModel inputModel )
@@ -37,7 +38,7 @@ namespace DevFreela.Application.Services.Implementations
         public void Delete(int id)
         {
             var project = _dbContext.Projects.SingleOrDefault(p => p.Id == id);
-            project.Cancel();
+            _dbContext.Remove(project);
             _dbContext.SaveChanges();
         }
 
@@ -50,10 +51,10 @@ namespace DevFreela.Application.Services.Implementations
 
         public List<ProjectViewModel> GetAll(string query)
         {
-            var projects = _dbContext.Projects;
+            var projects = _projectRepository.GetAll(query);
 
             var projectsViewModel = projects.
-                Select(p => new ProjectViewModel(p.Id,p.Title,p.CreatedAt))
+                Select(p => new ProjectViewModel(p.Id, p.Title, p.CreatedAt))
                 .ToList();
 
             return projectsViewModel;
@@ -61,10 +62,7 @@ namespace DevFreela.Application.Services.Implementations
 
         public ProjectDetailsViewModel GetById(int id)
         {
-            var project = _dbContext.Projects
-                .Include(p => p.Client)
-                .Include(p => p.Freelancer)
-                .SingleOrDefault(p => p.Id == id);
+            var project = _projectRepository.GetById(id);
             
             if(project == null)
             {
